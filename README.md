@@ -2,6 +2,8 @@
 **Python-4045 HW2 Problem Sets** <br>
 **Author: Temel Lodos Durak** <br>
 **Date: 02/04/2023** <br>
+**Github Account: TLodosDurak** <br>
+**Repo URL:** https://github.com/TLodosDurak/Python4045-HW2.git 
 
 ---
 # Problem 1
