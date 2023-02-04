@@ -1,0 +1,35 @@
+   1."""
+   2.Python 4045
+   3.HW 2 Problem 1
+   4.Author: Temel Lodos Durak
+   5.Date: 02/05/23
+   6.
+   7."""
+   8.def line_number(file1: str, file2: str):
+   9.    '''
+  10.    line_number takes as parameters two strings representing file names.
+  11.    The function reads the file indicated by the first parameter and writes its
+  12.    lines prefixed by the line number to the file represented by the second parameter.
+  13.    '''
+  14.    
+  15.    try:
+  16.        input_file = open(file1, "r") 
+  17.    except FileNotFoundError as e:
+  18.        raise e
+  19.        
+  20.    output_file = open(file2, "w")
+  21.    
+  22.    new_str = '' 
+  23.    count = 1
+  24.    for line_str in input_file:
+  25.        new_str += "{:4}.".format(count) + line_str
+  26.        count+= 1
+  27.    output_file.write(new_str)
+  28.    input_file.close() #closing file streams
+  29.    output_file.close()
+  30.    
+  31.#Input file will be this file itself
+  32.file1_str = "p1_Durak_Temel.py"
+  33.file2_str = "p1_Durak_Temel.py.txt" #Output file will be created with this name
+  34.line_number(file1_str, file2_str)
+  35.

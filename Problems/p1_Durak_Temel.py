@@ -19,8 +19,17 @@ def line_number(file1: str, file2: str):
         
     output_file = open(file2, "w")
     
+    new_str = '' 
+    count = 1
+    for line_str in input_file:
+        new_str += "{:4}.".format(count) + line_str
+        count+= 1
+    output_file.write(new_str)
+    input_file.close() #closing file streams
+    output_file.close()
     
 #Input file will be this file itself
 file1_str = "p1_Durak_Temel.py"
 file2_str = "p1_Durak_Temel.py.txt" #Output file will be created with this name
 line_number(file1_str, file2_str)
+
