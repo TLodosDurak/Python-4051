@@ -5,31 +5,62 @@
    5.Date: 02/05/23
    6.
    7."""
-   8.def line_number(file1: str, file2: str):
-   9.    '''
-  10.    line_number takes as parameters two strings representing file names.
-  11.    The function reads the file indicated by the first parameter and writes its
-  12.    lines prefixed by the line number to the file represented by the second parameter.
-  13.    '''
-  14.    
-  15.    try:
-  16.        input_file = open(file1, "r") 
-  17.    except FileNotFoundError as e:
-  18.        raise e
-  19.        
-  20.    output_file = open(file2, "w")
-  21.    
-  22.    new_str = '' 
-  23.    count = 1
-  24.    for line_str in input_file:
-  25.        new_str += "{:4}.".format(count) + line_str
-  26.        count+= 1
-  27.    output_file.write(new_str)
-  28.    input_file.close() #closing file streams
-  29.    output_file.close()
-  30.    
-  31.#Input file will be this file itself
-  32.file1_str = "p1_Durak_Temel.py"
-  33.file2_str = "p1_Durak_Temel.py.txt" #Output file will be created with this name
-  34.line_number(file1_str, file2_str)
-  35.
+   8.#a)
+   9.def line_number(file1: str, file2: str):
+  10.    """
+  11.    line_number takes as parameters two strings representing file names.
+  12.    The function reads the file indicated by the first parameter and writes its
+  13.    lines prefixed by the line number to the file represented by the second parameter.
+  14.    """
+  15.    
+  16.    try:
+  17.        input_file = open(file1, "r") 
+  18.    except FileNotFoundError as e:
+  19.        raise e
+  20.        
+  21.    output_file = open(file2, "w")
+  22.    
+  23.    new_str = '' 
+  24.    count = 1
+  25.    for line_str in input_file:
+  26.        new_str += "{:4}.".format(count) + line_str
+  27.        count+= 1
+  28.    output_file.write(new_str)
+  29.    input_file.close() #closing file streams
+  30.    output_file.close()
+  31.    
+  32.#Input file will be this file itself
+  33.file1_str = "p1_Durak_Temel.py"
+  34.file2_str = "p1_Durak_Temel.py.txt" #Output file will be created with this name
+  35.line_number(file1_str, file2_str)
+  36.
+  37.#b)
+  38.def parse_functions(file_name: str):
+  39.    """
+  40.    parse_functions takes as parameter a string representing the name of
+  41.    a .py file. The function reads and parses the Python file and returns
+  42.    a tuple of tuples where each tuple has its element 0 a function name, 
+  43.    element 1 the line number, and element 2 the function code as a string
+  44.    (signature and body), with all comments removed. The top-level tuple
+  45.    returned is ordered alphabetically by the function name.
+  46.    """
+  47.    try:
+  48.        input_file = open(file_name, "r") 
+  49.    except FileNotFoundError as e:
+  50.        raise e
+  51.    count = 1
+  52.    result = []
+  53.    current = []
+  54.    body=""
+  55.    for line_str in input_file: 
+  56.        if("def" in line_str):
+  57.            fun_name = line_str[4:line_str.find('(')]#from first letter of function name to (
+  58.            current.append(fun_name)
+  59.            current.append(count)
+  60.            result.append(tuple(current))
+  61.        count+=1
+  62.        current = []
+  63.    return tuple(result)
+  64.print(parse_functions("funs.py"))
+  65.            
+  66.    
