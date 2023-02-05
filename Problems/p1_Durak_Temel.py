@@ -35,6 +35,22 @@ file2_str = "p1_Durak_Temel.py.txt" #Output file will be created with this name
 line_number(file1_str, file2_str)
 
 #b)
+def sort_funs_tuples(fun_tuple: tuple):
+    '''
+    Takes in a tuple of tuples and returns a sorted tuple of tuples according to 
+    alphabetic order of the first letter of the first element of each tuple that corresponds to function name
+    '''
+    result = list(fun_tuple)
+    for i,tup1 in enumerate(result): #Selection sort using double for loop
+        min_tup_index = i
+        for j,tup2 in enumerate(result[i+1:], i+1):#nested forloop that starts from the same index
+            if(result[min_tup_index][0][0]>tup2[0][0]):     #comparing first letter of the function name of the min index with the current one
+                min_tup_index = j
+        temp = result[i]                    #swapping their places
+        result[i] = result[min_tup_index]
+        result[min_tup_index]= temp
+    return tuple(result)    
+
 def parse_functions(file_name: str):
     """
     parse_functions takes as parameter a string representing the name of
@@ -48,19 +64,31 @@ def parse_functions(file_name: str):
         input_file = open(file_name, "r") 
     except FileNotFoundError as e:
         raise e
-    count = 1
-    result = []
-    current = []
-    body=""
-    for line_str in input_file: 
-        if("def" in line_str):
-            fun_name = line_str[4:line_str.find('(')]#from first letter of function name to (
+    file_all = input_file.readlines()
+    result = []         #Creating lists for the tuple of tuples we are going to return
+    current = []        #and a list for each individual tuple
+    for i, line_str1 in enumerate(file_all):
+        body = ""
+        if("def" in line_str1):
+            fun_name = line_str1[4:line_str1.find('(')]#from first letter of function name to (
             current.append(fun_name)
-            current.append(count)
+            current.append(i+1) #line number is i+1 since i starts from 0
+            for j, line_str2 in enumerate(file_all[i:]): #starting from the functions index
+                if (j == 0 or line_str2.startswith((' ', '\t'))): #body will stop once line does not start with empty space or isnt the def line which is j ==0
+                    for char in line_str2:
+                        if(char != '#'):
+                            body = body + char
+                        else:
+                            break
+                else:
+                    break  
+            current.append(body)
             result.append(tuple(current))
-        count+=1
         current = []
-    return tuple(result)
+    input_file.close()
+    return sort_funs_tuples(tuple(result))
+
 print(parse_functions("funs.py"))
             
+
     

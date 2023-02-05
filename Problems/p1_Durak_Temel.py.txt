@@ -35,32 +35,60 @@
   35.line_number(file1_str, file2_str)
   36.
   37.#b)
-  38.def parse_functions(file_name: str):
-  39.    """
-  40.    parse_functions takes as parameter a string representing the name of
-  41.    a .py file. The function reads and parses the Python file and returns
-  42.    a tuple of tuples where each tuple has its element 0 a function name, 
-  43.    element 1 the line number, and element 2 the function code as a string
-  44.    (signature and body), with all comments removed. The top-level tuple
-  45.    returned is ordered alphabetically by the function name.
-  46.    """
-  47.    try:
-  48.        input_file = open(file_name, "r") 
-  49.    except FileNotFoundError as e:
-  50.        raise e
-  51.    count = 1
-  52.    result = []
-  53.    current = []
-  54.    body=""
-  55.    for line_str in input_file: 
-  56.        if("def" in line_str):
-  57.            fun_name = line_str[4:line_str.find('(')]#from first letter of function name to (
-  58.            current.append(fun_name)
-  59.            current.append(count)
-  60.            result.append(tuple(current))
-  61.        count+=1
-  62.        current = []
-  63.    return tuple(result)
-  64.print(parse_functions("funs.py"))
-  65.            
-  66.    
+  38.def sort_funs_tuples(fun_tuple: tuple):
+  39.    '''
+  40.    Takes in a tuple of tuples and returns a sorted tuple of tuples according to 
+  41.    alphabetic order of the first letter of the first element of each tuple that corresponds to function name
+  42.    '''
+  43.    result = list(fun_tuple)
+  44.    for i,tup1 in enumerate(result): #Selection sort using double for loop
+  45.        min_tup_index = i
+  46.        for j,tup2 in enumerate(result[i+1:], i+1):#nested forloop that starts from the same index
+  47.            if(result[min_tup_index][0][0]>tup2[0][0]):     #comparing first letter of the function name of the min index with the current one
+  48.                min_tup_index = j
+  49.        temp = result[i]                    #swapping their places
+  50.        result[i] = result[min_tup_index]
+  51.        result[min_tup_index]= temp
+  52.    return tuple(result)    
+  53.
+  54.def parse_functions(file_name: str):
+  55.    """
+  56.    parse_functions takes as parameter a string representing the name of
+  57.    a .py file. The function reads and parses the Python file and returns
+  58.    a tuple of tuples where each tuple has its element 0 a function name, 
+  59.    element 1 the line number, and element 2 the function code as a string
+  60.    (signature and body), with all comments removed. The top-level tuple
+  61.    returned is ordered alphabetically by the function name.
+  62.    """
+  63.    try:
+  64.        input_file = open(file_name, "r") 
+  65.    except FileNotFoundError as e:
+  66.        raise e
+  67.    file_all = input_file.readlines()
+  68.    result = []         #Creating lists for the tuple of tuples we are going to return
+  69.    current = []        #and a list for each individual tuple
+  70.    for i, line_str1 in enumerate(file_all):
+  71.        body = ""
+  72.        if("def" in line_str1):
+  73.            fun_name = line_str1[4:line_str1.find('(')]#from first letter of function name to (
+  74.            current.append(fun_name)
+  75.            current.append(i+1) #line number is i+1 since i starts from 0
+  76.            for j, line_str2 in enumerate(file_all[i:]): #starting from the functions index
+  77.                if (j == 0 or line_str2.startswith((' ', '\t'))): #body will stop once line does not start with empty space or isnt the def line which is j ==0
+  78.                    for char in line_str2:
+  79.                        if(char != '#'):
+  80.                            body = body + char
+  81.                        else:
+  82.                            break
+  83.                else:
+  84.                    break  
+  85.            current.append(body)
+  86.            result.append(tuple(current))
+  87.        current = []
+  88.    input_file.close()
+  89.    return sort_funs_tuples(tuple(result))
+  90.
+  91.print(parse_functions("funs.py"))
+  92.            
+  93.
+  94.    
