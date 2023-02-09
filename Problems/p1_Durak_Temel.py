@@ -43,7 +43,7 @@ def sort_funs_tuples(fun_tuple: tuple):
     result = list(fun_tuple)
     for i,tup1 in enumerate(result): #Selection sort using double for loop
         min_tup_index = i
-        for j,tup2 in enumerate(result[i+1:], i+1):#nested forloop that starts from the same index
+        for j,tup2 in enumerate(result[i+1:], i+1):#nested forloop that starts from the next index
             if(result[min_tup_index][0][0]>tup2[0][0]):     #comparing first letter of the function name of the min index with the current one
                 min_tup_index = j
         temp = result[i]                    #swapping their places
