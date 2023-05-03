@@ -7,7 +7,7 @@
 
 ---
 **Disclaimer:**
-To change between GitHub Accounts, go to Credential Manager in windows and remove the github. Then do $git config --list. You will found  (eg.user.name=TlLodosDurak
+To change between GitHub Accounts, go to Credential Manager in windows and remove the github. Then do $git config --list. You will found  (eg.user.name=TLodosDurak
 user.email=tlodosdurak@gmail.edu). Do $git config --global user.email "email@example.com" and
 $git config --global user.name "user" for desired email and user name. When you try to push, pop up window will ask you to log in to your GitHub account. And then you are set.
 
